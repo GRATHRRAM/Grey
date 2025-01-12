@@ -13,7 +13,7 @@ typedef struct Map {
     uint16 RowSize;
 } Map;
 
-/* InitMap Sets Map->RowSize to 8! */
+/* InitMap Sets Map->RowSize to 8 if zero! */
 uint8 InitMap(uint16 ChunkCout, uint8 *Chunks, Map *map);
 uint8 ReInitMap(uint16 ChunkCout, uint8 *Chunks, Map *map);
 void  FreeMap(Map *map);
