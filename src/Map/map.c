@@ -13,7 +13,7 @@ void DrawMiniMap(Vector2 MiniMapPosition, Vector2 PlayerPosition, Map *map, floa
 /* Source */
 
 uint8 InitMap(uint16 ChunkCout, uint8 *Chunks, Map *map) {
-    map->Chunks = calloc(ChunkCout, sizeof(uint16));
+    map->Chunks = calloc(ChunkCout, sizeof(uint8));
     if(map->Chunks == NULL) return MAP_ERR_CANT_ALLOC_MEM;
 
     for(uint16 cc = 0; cc < ChunkCout; ++cc) {
@@ -27,7 +27,7 @@ uint8 InitMap(uint16 ChunkCout, uint8 *Chunks, Map *map) {
 }
 
 uint8 ReInitMap(uint16 ChunkCout, uint8 *Chunks, Map *map) {
-    map->Chunks = realloc(map->Chunks, ChunkCout * sizeof(uint16));
+    map->Chunks = realloc(map->Chunks, ChunkCout * sizeof(uint8));
     if(map->Chunks == NULL) return MAP_ERR_CANT_ALLOC_MEM;
     
     for(uint16 cc = 0; cc < ChunkCout; ++cc) {
@@ -46,16 +46,17 @@ void FreeMap(Map *map) {
 void DrawMiniMap(Vector2 MiniMapPosition, Vector2 PlayerPosition, Map *map, float Scale) {
     uint16 cc = 0;//Current Chunk
     for(uint16 y = 0 ;; ++y) {
-        if(cc > map->ChunkCount) break;
+        if(cc == map->ChunkCount) break;
         for(uint x = 0 ;; ++x) {
-            if(x > map->RowSize) break;
+            if(x == map->RowSize) break;
+         
             if(map->Chunks[cc] == (uint8) 0x0) {
                 DrawRectangle(
                     ((x * 50) * Scale) + MiniMapPosition.x,
                     ((y * 50) * Scale) + MiniMapPosition.y,
                     50 * Scale,
                     50 * Scale, 
-                    RED
+                    LIGHTGRAY
                 );
             } else {
                 DrawRectangle(
@@ -63,7 +64,7 @@ void DrawMiniMap(Vector2 MiniMapPosition, Vector2 PlayerPosition, Map *map, floa
                     ((y * 50) * Scale) + MiniMapPosition.y,
                     50 * Scale,
                     50 * Scale, 
-                    LIGHTGRAY
+                    DARKBLUE
                );
             }
             cc++;
