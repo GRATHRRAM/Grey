@@ -9,27 +9,30 @@ void  __RunGame(){
 
     Map map = {};
     uint8 maplayout[] = {
-        1,1,1,1,
-        1,0,0,1,
-        1,0,0,1,
-        1,1,1,1
+        1,1,1,1,1,
+        1,0,0,0,1,
+        1,0,1,1,1,
+        1,0,0,0,1,
+        1,1,1,1,1
     };
     
-    InitMap(16,maplayout, &map);
-    map.RowSize = 4;
+    InitMap(&map, 25, maplayout, 5);
 
     Player pl = {};
-    InitPlayer(&pl, 100, 100, 0, 200);
+    InitPlayer(&pl, 100, 100, 0, 70, 10);
     
     PlayerActions pla = {};
     pla.Forward = KEY_W;
+    pla.Backward = KEY_S;
+    pla.RotLeft = KEY_LEFT;
+    pla.RotRight = KEY_RIGHT;
 
     while(!WindowShouldClose()){
         MovePlayer(&pl,&pla,GetFrameTime());
 
         BeginDrawing();
             ClearBackground(BLACK);
-            DrawMiniMap((Vector2){},pl.pos, &map, 1.f);
+            DrawMiniMap(&map, &pl, (Vector2){}, 1.f, MAP_FLAG_DRAW_DIR);
         EndDrawing();
     }
 

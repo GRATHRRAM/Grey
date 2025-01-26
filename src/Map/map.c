@@ -4,15 +4,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-uint8 InitMap(uint16 ChunkCout, uint8 *Chunks, Map *map);
-uint8 ReInitMap(uint16 ChunkCout, uint8 *Chunks, Map *map);
+uint8 InitMap(Map *map, uint16 ChunkCout, uint8 *Chunks, uint16 RowSize);
+uint8 ReInitMap(Map *map, uint16 ChunkCout, uint8 *Chunks, uint16 RowSize);
 void  FreeMap(Map *map);
 
-void DrawMiniMap(Vector2 MiniMapPosition, Vector2 PlayerPosition, Map *map, float Scale);
+void DrawMiniMap(Map *map, Player *_Player, Vector2 MiniMapPosition, float Scale, uint8 Flags);
 
 /* Source */
 
-uint8 InitMap(uint16 ChunkCout, uint8 *Chunks, Map *map) {
+uint8 InitMap(Map *map, uint16 ChunkCout, uint8 *Chunks, uint16 RowSize) {
     map->Chunks = calloc(ChunkCout, sizeof(uint8));
     if(map->Chunks == NULL) return MAP_ERR_CANT_ALLOC_MEM;
 
@@ -20,13 +20,13 @@ uint8 InitMap(uint16 ChunkCout, uint8 *Chunks, Map *map) {
         map->Chunks[cc] = Chunks[cc];
     }
 
-    if(map->RowSize == 0) map->RowSize = 0x8;
     map->ChunkCount = ChunkCout;
+    map->RowSize = RowSize;
 
     return MAP_ERR_OK; 
 }
 
-uint8 ReInitMap(uint16 ChunkCout, uint8 *Chunks, Map *map) {
+uint8 ReInitMap(Map *map, uint16 ChunkCout, uint8 *Chunks, uint16 RowSize) {
     map->Chunks = realloc(map->Chunks, ChunkCout * sizeof(uint8));
     if(map->Chunks == NULL) return MAP_ERR_CANT_ALLOC_MEM;
     
@@ -34,7 +34,9 @@ uint8 ReInitMap(uint16 ChunkCout, uint8 *Chunks, Map *map) {
         map->Chunks[cc] = Chunks[cc];
     
     }
+    
     map->ChunkCount = map->ChunkCount;
+    map->RowSize = RowSize;
     
     return MAP_ERR_OK; 
 }
@@ -43,13 +45,13 @@ void FreeMap(Map *map) {
     free(map->Chunks);
 }
 
-void DrawMiniMap(Vector2 MiniMapPosition, Vector2 PlayerPosition, Map *map, float Scale) {
+void DrawMiniMap(Map *map, Player *_Player, Vector2 MiniMapPosition, float Scale, uint8 Flags) {
     uint16 cc = 0;//Current Chunk
     for(uint16 y = 0 ;; ++y) {
         if(cc == map->ChunkCount) break;
         for(uint x = 0 ;; ++x) {
             if(x == map->RowSize) break;
-         
+            
             if(map->Chunks[cc] == (uint8) 0x0) {
                 DrawRectangle(
                     ((x * 50) * Scale) + MiniMapPosition.x,
@@ -71,9 +73,18 @@ void DrawMiniMap(Vector2 MiniMapPosition, Vector2 PlayerPosition, Map *map, floa
         }
     }
 
+    if(Flags & MAP_FLAG_DRAW_DIR) {
+        DrawLineEx(
+                (Vector2){_Player->pos.x, _Player->pos.y},
+                (Vector2){_Player->dpos.x + _Player->pos.x * 2, _Player->dpos.y + _Player->pos.y * 2},
+                Scale * 2,
+                YELLOW
+        ); 
+    }
+
     DrawRectangle(
-            (PlayerPosition.x - 5 + MiniMapPosition.x) * Scale,
-            (PlayerPosition.y - 5 + MiniMapPosition.y) * Scale,
+            (_Player->pos.x - 5 + MiniMapPosition.x) * Scale,
+            (_Player->pos.y - 5 + MiniMapPosition.y) * Scale,
             10 * Scale,
             10 * Scale,
             YELLOW

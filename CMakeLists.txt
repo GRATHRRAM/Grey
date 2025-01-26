@@ -7,8 +7,10 @@ project(grey_project VERSION 1.0)
 set(srcs
     src/main.c
     src/Map/map.c
+    src/Player/player.c
 )
 
 add_executable(grey src/linux_main.c ${srcs})
 
 target_link_libraries(grey PRIVATE m raylib)
+target_compile_options(grey PRIVATE -Wall -Wextra -O2)
