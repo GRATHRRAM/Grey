@@ -19,7 +19,7 @@ void  __RunGame(){
     InitMap(&map, 25, maplayout, 5);
 
     Player pl = {};
-    InitPlayer(&pl, 100, 100, 0, 70, 10);
+    InitPlayer(&pl, 100, 100, 0, 7, 7);
     
     PlayerActions pla = {};
     pla.Forward = KEY_W;

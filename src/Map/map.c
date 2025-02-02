@@ -75,8 +75,12 @@ void DrawMiniMap(Map *map, Player *_Player, Vector2 MiniMapPosition, float Scale
 
     if(Flags & MAP_FLAG_DRAW_DIR) {
         DrawLineEx(
-                (Vector2){_Player->pos.x, _Player->pos.y},
-                (Vector2){_Player->dpos.x + _Player->pos.x * 2, _Player->dpos.y + _Player->pos.y * 2},
+                (Vector2){
+                (_Player->pos.x - 5 + MiniMapPosition.x) * Scale,
+                (_Player->pos.y - 5 + MiniMapPosition.y) * Scale},
+                (Vector2){
+                ((_Player->dpos.x * 6) + _Player->pos.x + MiniMapPosition.x) * Scale,
+                ((_Player->dpos.y * 6) + _Player->pos.y + MiniMapPosition.y) * Scale},
                 Scale * 2,
                 YELLOW
         ); 
