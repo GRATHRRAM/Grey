@@ -1,5 +1,4 @@
 #include "../types.h"
-#include "raylib.h"
 #include "map.h"
 #include <stdlib.h>
 #include <stdio.h>

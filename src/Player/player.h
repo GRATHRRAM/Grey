@@ -2,9 +2,6 @@
 #define PLAYER_H
 
 #include "../types.h"
-#include <raylib.h>
-
-#define __PI 3.1415926
 
 typedef struct Player {
     Vector2 pos;
@@ -15,13 +12,13 @@ typedef struct Player {
 } Player;
 
 typedef struct PlayerActions {
-    RayKey Forward;
-    RayKey Backward;
-    RayKey Left;
-    RayKey Right;
+    Key Forward;
+    Key Backward;
+    Key Left;
+    Key Right;
 
-    RayKey RotLeft;
-    RayKey RotRight;
+    Key RotLeft;
+    Key RotRight;
 } PlayerActions;
 
 void InitPlayer(Player *_Player, float x, float y, float Rotation, float Speed, float RotationSpeed);

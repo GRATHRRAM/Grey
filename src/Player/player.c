@@ -1,5 +1,4 @@
 #include "player.h"
-#include <math.h>
 
 void InitPlayer(Player *_Player, float x, float y, float Rotation, float Speed, float RotationSpeed);
 void MovePlayer(Player *_Player, PlayerActions *PA, float Delta);

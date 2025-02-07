@@ -1,2 +1,2 @@
-# Grey
- Grah's Rey Caster
+# Gray
+ Grah's Ray Caster
